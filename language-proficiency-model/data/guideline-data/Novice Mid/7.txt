@@ -1,0 +1,5 @@
+1. Hola ¿Cómo estás?
+2. Me gusta la comida.
+3. Perdón, repite por favor.
+4. Yo soy de Mexico.
+5. Tengo clase a las diez de la mañana.

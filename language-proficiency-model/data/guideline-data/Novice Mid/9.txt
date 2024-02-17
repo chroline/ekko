@@ -1,0 +1,5 @@
+1. Hola. ¿Cómo estás?
+2. Estoy bien, gracias. ¿Y tú?
+3. Tengo hambre. Quiero comer pizza.
+4. Me gusta bailar y cantar.
+5. ¿Dónde está el baño, por favor?
