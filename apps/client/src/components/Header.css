@@ -1,0 +1,44 @@
+@import url('font.css');
+
+.inter-font-black {
+  font-family: 'Inter', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+  font-variation-settings: 'slnt' 0;
+}
+
+.inter-font-bold {
+  font-family: 'Inter', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 650;
+  font-style: normal;
+  font-variation-settings: 'slnt' 0;
+}
+
+.inter-font-med {
+  font-family: 'Inter', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings: 'slnt' 0;
+}
+
+h6 {
+  font-size: 10px;
+  color: #fff;
+  margin: 0;
+}
+
+p {
+  font-size: 18px;
+  font-family: 'Inter', 'sans-serif';
+  color: #fff;
+  margin: 5px 0px;
+}
+
+.header-cont {
+  display: inline-block;
+  margin-right: 30px;
+  margin-top: 20px;
+}
