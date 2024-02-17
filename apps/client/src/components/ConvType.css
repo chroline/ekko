@@ -1,0 +1,50 @@
+body {
+    background-image: url('./imgs/blankbg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    overflow: hidden;
+    padding: 12px;
+  }
+  
+  h1 {
+    color: #fff;
+    margin-top: 65px;
+    margin-bottom: 55px;
+  }
+  
+  .conv-type-card p {
+    font-size: 20px;
+    color: #9b61ff;
+    margin: 0;
+  }
+  
+  #card-desc {
+    margin-top: 5px;
+  }
+  
+  .conv-type-card svg {
+    fill: #9b61ff;
+    display: inline-block;
+    margin: 0;
+    width: 52px;
+    height: 52px;
+    margin-right: 12px;
+    margin-top: 2px;
+  }
+  
+  .conv-type-card {
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    margin: 16px 0px;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 18px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  .conv-type-card:hover {
+    background-color: #dcdcdc;
+  }
+  
