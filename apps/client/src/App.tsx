@@ -9,6 +9,9 @@ import SignInPage from "~/pages/SignInPage.tsx";
 import SignUpPage from "~/pages/SignUpPage.tsx";
 import Onboarding from "~/pages/Onboarding.tsx";
 
+import FeedbackPage from "~/pages/FeedbackPage.tsx";
+
+
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
@@ -21,6 +24,7 @@ function App() {
           <Route path={"/"} element={<AuthGuard />}>
             <Route index element={<HomePage />} />
             <Route path={"/onboarding"} element={<Onboarding />} />
+            <Route path={"/feedbackpage"} element={<FeedbackPage />} />
           </Route>
           <Route path={"/auth/sign-in"} element={<SignInPage />} />
           <Route path={"/auth/sign-up"} element={<SignUpPage />} />

@@ -92,6 +92,7 @@ function Onboarding() {
             className="rounded-full" 
             ripple={false}
             onClick={handleSubmit}
+            placeholder=""
         >
             SUBMIT
         </Button>
