@@ -7,6 +7,7 @@ import AuthGuard from "~/components/AuthGuard.tsx";
 import HomePage from "~/pages/HomePage.tsx";
 import SignInPage from "~/pages/SignInPage.tsx";
 import SignUpPage from "~/pages/SignUpPage.tsx";
+import Onboarding from "~/pages/Onboarding.tsx";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path={"/"} element={<AuthGuard />}>
             <Route index element={<HomePage />} />
+            <Route path={"/onboarding"} element={<Onboarding />} />
           </Route>
           <Route path={"/auth/sign-in"} element={<SignInPage />} />
           <Route path={"/auth/sign-up"} element={<SignUpPage />} />
