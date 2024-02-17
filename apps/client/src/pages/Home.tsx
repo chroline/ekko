@@ -1,37 +1,29 @@
-import { StrictMode, useState } from 'react';
-import Hamburger from 'hamburger-react';
-import Header from './Header';
+import Hamburger from "hamburger-react";
 
-import './Home.css';
+import { useState } from "react";
+
+import Header from "~/components/Header";
+
+import "./Home.css";
 
 function Home() {
   // const [count, setCount] = useState(0)
   const [isOpen, setOpen] = useState(false);
 
   return (
-    <StrictMode>
+    <>
       <div className="home-cont">
         <div className="container">
           <Hamburger color="#fff" size={25} toggled={isOpen} toggle={setOpen} />
 
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="30"
-            height="30"
-            viewBox="0 0 20"
-            className="profile-svg"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20" className="profile-svg">
             <path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3zm9 11v-1a7 7 0 0 0-7-7h-4a7 7 0 0 0-7 7v1h2v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1z"></path>
           </svg>
         </div>
 
         <h1 className="inter-font-bold">Hola, Nick</h1>
 
-        <Header
-          contentFluency="Proficient"
-          contentLang="Spanish"
-          contentSmthn="Else"
-        />
+        <Header contentFluency="Proficient" contentLang="Spanish" contentSmthn="Else" />
 
         <div id="prog-circ">
           <p className="inter-font-black">67%</p>
@@ -47,7 +39,7 @@ function Home() {
 
         <button className="start-btn">START CONVERSATION</button>
       </div>
-    </StrictMode>
+    </>
   );
 }
 
