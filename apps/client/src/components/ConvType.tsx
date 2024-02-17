@@ -1,11 +1,6 @@
-import { StrictMode } from 'react';
-
-import './ConvType.css';
-import './font.css';
-
 function ConvType() {
   return (
-    <StrictMode>
+    <>
       <h1 className="inter-font-bold">What type of conversation?</h1>
 
       <div className="conv-type-card">
@@ -16,8 +11,7 @@ function ConvType() {
         <div>
           <p className="inter-font-med">AUDIO BASED</p>
           <p id="card-desc" className="inter-font-light">
-            Speak with a personalized chat bot to practice vocalizing your
-            conversations.
+            Speak with a personalized chat bot to practice vocalizing your conversations.
           </p>
         </div>
       </div>
@@ -30,12 +24,11 @@ function ConvType() {
         <div>
           <p className="inter-font-med">AUDIO BASED</p>
           <p id="card-desc" className="inter-font-light">
-            Speak with a personalized chat bot to practice vocalizing your
-            conversations.
+            Speak with a personalized chat bot to practice vocalizing your conversations.
           </p>
         </div>
       </div>
-    </StrictMode>
+    </>
   );
 }
 

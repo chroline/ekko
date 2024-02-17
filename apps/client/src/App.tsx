@@ -1,15 +1,30 @@
+import { ClerkProvider, useAuth } from "@clerk/clerk-react";
+import { ConvexReactClient } from "convex/react";
+import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { Routes, Route } from "react-router-dom";
 
-import Home from "~/pages/Home.tsx";
+import AuthGuard from "~/components/AuthGuard.tsx";
+import HomePage from "~/pages/HomePage.tsx";
+import SignInPage from "~/pages/SignInPage.tsx";
+import SignUpPage from "~/pages/SignUpPage.tsx";
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
 function App() {
-  console.log("App");
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+        <Routes>
+          <Route path={"/"} element={<AuthGuard />}>
+            <Route index element={<HomePage />} />
+          </Route>
+          <Route path={"/auth/sign-in"} element={<SignInPage />} />
+          <Route path={"/auth/sign-up"} element={<SignUpPage />} />
+        </Routes>
+      </ConvexProviderWithClerk>
+    </ClerkProvider>
   );
 }
 

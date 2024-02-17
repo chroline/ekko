@@ -22,6 +22,7 @@
 
     "paths": {
       "~/*": ["./src/*"],
+      "~/convex/*": ["./../../convex/*"],
       "@app/common/*": ["../../packages/common/src/*"]
     }
   },

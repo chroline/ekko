@@ -12,22 +12,21 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  width: 100%;
+  min-height: 100vh;
 }
 
 
-body {
+.gradient-bg {
   /*background-image: linear-gradient(45deg, #8f4bff, #c1a7ff);*/
   background-image: url('./imgs/homebg.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  overflow: hidden;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  min-width: 100vw;
+  min-height: 100vh;
+}
+
+body, #root {
+  width: 100%;
   min-height: 100vh;
 }
 

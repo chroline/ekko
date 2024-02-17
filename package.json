@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "convex": "^1.9.0",
     "hamburger-react": "^2.5.0"
   },
   "devDependencies": {

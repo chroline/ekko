@@ -1,25 +1,15 @@
-import { StrictMode } from 'react';
+import { Fire } from "@phosphor-icons/react";
 
-import './Header.css';
-
-function Header(props: any) {
+function Header() {
   return (
-    <StrictMode>
-      <div className="header-cont">
-        <h6 className="inter-font-med">FLUENCY</h6>
-        <p className="inter-font-med">{props.contentFluency}</p>
-      </div>
+    <div className={"space-y-2 py-20 text-white"}>
+      <h1 className={"text-center font-bold"}>Hola, Nick</h1>
 
-      <div className="header-cont">
-        <h6 className="inter-font-med">LANGUAGE</h6>
-        <p className="inter-font-med">{props.contentLang}</p>
+      <div className={"flex items-center justify-center space-x-1 font-medium text-white"}>
+        <Fire weight="fill" className={"h-6 w-6"} />
+        <p className={"text-lg"}>5 DAY STREAK</p>
       </div>
-
-      <div className="header-cont">
-        <h6 className="inter-font-med">SOMETHING</h6>
-        <p className="inter-font-med">{props.contentSmthn}</p>
-      </div>
-    </StrictMode>
+    </div>
   );
 }
 
