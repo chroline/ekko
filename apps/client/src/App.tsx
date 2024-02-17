@@ -1,13 +1,14 @@
-import { StrictMode } from 'react'
-import './App.css'
-import Home from './components/Home.tsx'
+import { Routes, Route } from "react-router-dom";
 
 function App() {
-
   return (
-    <StrictMode>
-      <Home />
-    </StrictMode>
+    <>
+      <Routes>
+        <Route path="/" element={<></>}>
+          <Route index element={<></>} />
+        </Route>
+      </Routes>
+    </>
   );
 }
 
