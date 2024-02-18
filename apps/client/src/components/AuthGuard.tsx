@@ -19,7 +19,7 @@ export default function AuthGuard() {
         navigate("/auth/sign-in");
       }
       if (profile === null) {
-        navigate("/onboarding");
+        //navigate("/onboarding");
       }
     }
   }, [isSignedIn, isLoaded, profile, navigate]);

@@ -80,7 +80,7 @@ export default async function generateResponse({
           Mustache.render(GenerateResponsePrompt, config) +
           (message
             ? ""
-            : "\n\nDon't introduce the conversation to the user. Please start the conversation like you were the user's longtime friend. Ask a specific, open-ended, thought-provoking question."),
+            : "\n\nDon't introduce the conversation to the user. Please start the conversation like you were the user's longtime friend. Ask a specific, open-ended, thought-provoking question. Keep the length around 1-2 sentences."),
       },
       ...history.map((message, i) => ({ role: i % 2 === 0 ? "assistant" : "user", content: message || "" })),
       { role: "user", content: message || "" },

@@ -3,6 +3,9 @@ import {useState} from 'react';
 import { useNavigate } from "react-router-dom";
 
 import { Input, Select, Option, Button } from '@material-tailwind/react';
+
+import { convex } from '~/lib/utils';
+import { api } from '~/convex/_generated/api';
     
 
 function Onboarding() {
@@ -27,28 +30,18 @@ function Onboarding() {
         
     const navigate = useNavigate();
 
-    const handleSubmit = () => {
-        // Send formData to the backend
-        // try {
-        //   const response = await fetch('#', {
-        //     method: 'POST',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(formData),
-        //   });
-      
-        //   if (response.ok) {
-        //     console.log('Form data submitted successfully');
-        //     navigate('/');
-        //   } else {
-        //     console.error('Form data submission failed');
-        //   }
-        // } catch (error) {
-        //   console.error('An error occurred while submitting the form data:', error);
-      // }
-        console.log(formData);
-        navigate("/");
+    const handleSubmit = async () => {
+      console.log(formData);
+
+      await convex.mutation(api.profiles.createProfile, {
+        languageLearning: formData.language,
+        userName: formData.userName,
+        knownLanguages: formData.knownLanguages,
+        interests: formData.hobbies,
+        learningGoal: formData.purpose,
+      });
+
+      navigate("/");
     };
 
 

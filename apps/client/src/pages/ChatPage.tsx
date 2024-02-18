@@ -82,7 +82,7 @@ export default function ChatPage() {
   }, [caption]);
 
   return (
-    <div className={"flex min-h-[100vh] flex-col"}>
+    <div className={"flex min-h-[100vh] flex-col bg-white"}>
       <Transition
         appear={true}
         show={history.length === 0}
@@ -106,10 +106,12 @@ export default function ChatPage() {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className={"flex h-[100vh] flex-col overflow-hidden"}>
-          <AppBar />
-          <div className={"flex-1 pb-20 pt-6"}>
-            <div className={"space-y-4 px-4"}>
+        <div className={"flex min-h-[100vh] flex-col bg-white"}>
+          <div className={"fixed top-0 w-full z-50 bg-white"}>
+            <AppBar/>
+           </div>
+          <div className={"flex-1 pb-20 pt-6 mt-16"}>
+            <div className={"space-y-4 px-4 text-[#494949]"}>
               {history.map((message, i) => (
                 <ChatBubble key={i} message={message.message} isUser={message.isUser} />
               ))}

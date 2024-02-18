@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 
+import { mutation } from "./_generated/server";
 import { query } from "./_generated/server";
 
 export const getProfile = query({
@@ -10,5 +11,20 @@ export const getProfile = query({
       .query("profiles")
       .filter(q => q.eq(q.field("id"), args.profileId))
       .first();
+  },
+});
+
+
+export const createProfile = mutation({
+  args: { 
+    languageLearning: v.string(),
+    userName: v.string(),
+    knownLanguages: v.string(),
+    interests: v.string(),
+    learningGoal: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const profileId = await ctx.db.insert("profiles", args);
+    // do something with `profileId`
   },
 });
