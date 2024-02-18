@@ -24,8 +24,6 @@ export const createProfile = mutation({
     id: v.string(),
   },
   handler: async (ctx, args) => {
-    await ctx.db.insert("profiles", args);
+    await ctx.db.insert("profiles", { ...args, proficiencyLevel: "Novice" });
   },
 });
-
-

@@ -1,6 +1,6 @@
 import { useUser } from "@clerk/clerk-react";
 import { useQuery } from "convex/react";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 
 import { useEffect } from "react";
 
@@ -9,6 +9,7 @@ import { Id } from "~/convex/_generated/dataModel";
 import useProfile from "~/lib/useProfile.ts";
 
 export default function AuthGuard() {
+  const { pathname } = useLocation();
   const { isSignedIn, user, isLoaded } = useUser();
   const navigate = useNavigate();
 
@@ -20,17 +21,19 @@ export default function AuthGuard() {
       if (!isSignedIn) {
         navigate("/auth/sign-in");
       }
-      if (savedProfile === null) {
+      if (savedProfile === null && profile === null) {
         navigate("/onboarding");
       }
     }
-  }, [isSignedIn, isLoaded, profile, navigate]);
+  }, [isSignedIn, isLoaded, savedProfile, profile, navigate]);
 
   useEffect(() => {
     setProfile(profile);
   }, [profile]);
 
-  if (!isLoaded || !savedProfile) {
+  console.log({ isLoaded, savedProfile }, !isLoaded || (!savedProfile && pathname !== "/onboarding"));
+
+  if (!isLoaded || (!savedProfile && pathname !== "/onboarding")) {
     return null;
   }
 

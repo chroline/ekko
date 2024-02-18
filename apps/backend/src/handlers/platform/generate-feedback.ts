@@ -48,10 +48,12 @@ export default async function generateFeedback({
     }
   ).then(v => v.json());
 
+  console.log(proficiencyInference, { instances: [message] });
+
   await convex.mutation(api.feedbacks.createFeedback, {
     chatId,
     message,
     feedback,
-    proficiency: proficiencyInference.predictions?.[0].stringValue || "Novice",
+    proficiency: proficiencyInference.predictions?.[0] || "Novice",
   });
 }

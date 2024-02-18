@@ -18,15 +18,13 @@ import useProfile from "~/lib/useProfile.ts";
 import { convex, playAudio } from "~/lib/utils.ts";
 
 async function generateFeedback(args: { chatId: string; message: string; languageLearning: string }) {
-  console.log("hey");
-  const l = await fetch(import.meta.env.VITE_BACKEND_URL + "/platform/generate-feedback", {
+  await fetch(import.meta.env.VITE_BACKEND_URL + "/platform/generate-feedback", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(args),
   });
-  console.log(l);
 }
 
 async function generateResponse(args: { config: Omit<Profile, "name">; history: string[]; message: string }) {
