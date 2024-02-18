@@ -1,24 +1,25 @@
 import { ClerkProvider, useAuth } from "@clerk/clerk-react";
 import { ConvexReactClient } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
+import { useNavigate } from "react-router";
 import { Routes, Route } from "react-router-dom";
 
 import AuthGuard from "~/components/AuthGuard.tsx";
 import ChatPage from "~/pages/ChatPage.tsx";
+import FeedbackPage from "~/pages/FeedbackPage.tsx";
 import HomePage from "~/pages/HomePage.tsx";
+import Onboarding from "~/pages/Onboarding.tsx";
 import SignInPage from "~/pages/SignInPage.tsx";
 import SignUpPage from "~/pages/SignUpPage.tsx";
-import Onboarding from "~/pages/Onboarding.tsx";
-import FeedbackPage from "~/pages/FeedbackPage.tsx";
-
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
 function App() {
+  const navigate = useNavigate();
   return (
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+    <ClerkProvider navigate={navigate} publishableKey={PUBLISHABLE_KEY}>
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
         <Routes>
           <Route path={"/"} element={<AuthGuard />}>
@@ -27,8 +28,8 @@ function App() {
             <Route path={"/onboarding"} element={<Onboarding />} />
             <Route path={"/feedbackpage"} element={<FeedbackPage />} />
           </Route>
-          <Route path={"/auth/sign-in"} element={<SignInPage />} />
-          <Route path={"/auth/sign-up"} element={<SignUpPage />} />
+          <Route path={"/auth/sign-in/*"} element={<SignInPage />} />
+          <Route path={"/auth/sign-up/*"} element={<SignUpPage />} />
         </Routes>
       </ConvexProviderWithClerk>
     </ClerkProvider>
