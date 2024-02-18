@@ -1,23 +1,28 @@
-import { openai } from "../../lib/utils";
+import Mustache from "mustache";
+import { ChatCompletionMessageParam } from "openai/resources";
+
+import { openai } from "~/lib/utils";
+
+const GenerateResponsePrompt = await Bun.file("../../packages/prompts/GenerateResponse.mustache").text();
 
 async function textToSpeechInputStreaming(textIterator: AsyncGenerator<string, void>) {
-  const uri = `wss://api.elevenlabs.io/v1/text-to-speech/Lgq6SjqXaQmyYG6p9Y9n/stream-input?model_id=eleven_multilingual_v1`;
+  const uri = `wss://api.elevenlabs.io/v1/text-to-speech/pMsXgVXv3BLzUgSXRplE/stream-input?model_id=eleven_multilingual_v1`;
 
   const websocket = new WebSocket(uri);
 
-  return await new Promise<any[]>((resolve, reject) => {
+  return await new Promise<{ text: string; audio: any[] }>((resolve, reject) => {
     websocket.addEventListener("open", async () => {
+      let text = "";
       let audio: any[] = [];
 
       websocket.addEventListener("message", message => {
         const data = JSON.parse((message.data as Buffer).toString());
         console.log("got message");
         if (data.audio) audio.push(data.audio);
-        else resolve(audio);
+        else resolve({ text, audio });
       });
 
       const sendMessage = (message: Record<string, any>) => {
-        console.log(message);
         return new Promise<void>((resolve, reject) => {
           websocket.send(JSON.stringify(message));
           resolve();
@@ -26,12 +31,15 @@ async function textToSpeechInputStreaming(textIterator: AsyncGenerator<string, v
 
       await sendMessage({
         text: " ",
-        voice_settings: { stability: 0.5, similarity_boost: 0.8 },
+        voice_settings: { stability: 0.4, similarity_boost: 0.75 },
         xi_api_key: process.env.ELEVENLABS_API_KEY,
       });
 
-      for await (const text of textIterator) {
-        if (typeof text !== "undefined" && text !== "") await sendMessage({ text, try_trigger_generation: true });
+      for await (const newText of textIterator) {
+        if (typeof newText !== "undefined" && newText !== "") {
+          text += newText;
+          await sendMessage({ text: newText, try_trigger_generation: true });
+        }
       }
 
       await sendMessage({ text: "" });
@@ -53,21 +61,32 @@ export default async function generateResponse({
   history,
   message,
 }: {
-  config: any;
+  config: {
+    languageLearning: string;
+    knownLanguages: string;
+    interests: string;
+    learningGoal: string;
+    proficiencyLevel: string;
+  };
   history: string[];
-  message: string;
+  message?: string;
 }) {
   const response = await openai.chat.completions.create({
-    model: "Qwen/Qwen1.5-14B-Chat",
+    model: "NousResearch/Nous-Hermes-2-Yi-34B" as any,
     messages: [
       {
         role: "system",
         content:
-          "Your role is to assist the user in learning Spanish. Please only respond in Spanish. Please only respond in 1–3 sentences.",
+          Mustache.render(GenerateResponsePrompt, config) +
+          (message
+            ? ""
+            : "\n\nDon't introduce the conversation to the user. Please start the conversation like you were the user's longtime friend. Ask a specific, open-ended, thought-provoking question."),
       },
-      { role: "user", content: message },
-    ],
+      ...history.map((message, i) => ({ role: i % 2 === 0 ? "assistant" : "user", content: message || "" })),
+      { role: "user", content: message || "" },
+    ].filter(message => !!message) as ChatCompletionMessageParam[],
     stream: true,
+    temperature: 1,
   });
 
   async function* textIterator() {
@@ -77,11 +96,11 @@ export default async function generateResponse({
     }
   }
 
-  const res = await textToSpeechInputStreaming(textIterator());
+  const { text, audio } = await textToSpeechInputStreaming(textIterator());
 
-  const mp3buffer = Buffer.concat(res.map(output => Buffer.from(output, "base64")));
+  const mp3buffer = Buffer.concat(audio.map(output => Buffer.from(output, "base64")));
 
   await Bun.write(`output.mp3`, mp3buffer);
 
-  console.log("MP3 file saved successfully");
+  return { text, mp3buffer };
 }

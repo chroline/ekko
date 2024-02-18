@@ -8,9 +8,11 @@
   "dependencies": {
     "@elysiajs/cors": "^0.8.0",
     "elysia": "latest",
+    "mustache": "^4.2.0",
     "openai": "^4.28.0"
   },
   "devDependencies": {
+    "@types/mustache": "^4.2.5",
     "bun-types": "latest"
   },
   "module": "src/index.js"

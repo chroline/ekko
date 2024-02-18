@@ -14,9 +14,15 @@ const app = new Elysia({ prefix: "api" })
   .group("/platform", app =>
     app.post("/generate-response", ({ body }) => generateResponse(body), {
       body: t.Object({
-        config: t.Any(),
+        config: t.Object({
+          languageLearning: t.String(),
+          knownLanguages: t.String(),
+          interests: t.String(),
+          learningGoal: t.String(),
+          proficiencyLevel: t.String(),
+        }),
         history: t.Array(t.String()),
-        message: t.String(),
+        message: t.Optional(t.String()),
       }),
     })
   )
