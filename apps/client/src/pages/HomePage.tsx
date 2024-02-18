@@ -31,9 +31,9 @@ function HomePage() {
           id="prog-circ"
           style={{ boxShadow: "0px 4px 18px 8px rgba(0, 0, 0, 0.08), inset #ff8a613b 0px 4px 18px 8px" }}
         >
-          <p className="text-lg font-medium">PROFICIENCY</p>
+          <p className={"text-lg font-medium text-[#ff8a61]"}>PROFICIENCY</p>
           <p className={"text-3xl font-bold text-[#ff8a61]"}>Superior</p>
-          <p className="inter-font-black">🇪🇸 Spanish</p>
+          <p className={"inter-font-black text-[#3b3b3b]"}>🇪🇸 Spanish</p>
         </div>
 
         <div className={"flex justify-center pt-24"}>
