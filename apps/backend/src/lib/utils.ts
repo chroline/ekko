@@ -6,7 +6,7 @@ export { api } from "../../../../convex/_generated/api";
 
 export const openai = new OpenAI({
   apiKey: process.env["TOGETHER_API_KEY"],
-  baseURL: "https://api.together.xyz",
+  baseURL: "https://api.together.xyz/v1",
 });
 
 export const convex = new ConvexHttpClient(process.env.CONVEX_URL as string);

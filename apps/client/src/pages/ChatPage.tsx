@@ -1,3 +1,4 @@
+import { useUser } from "@clerk/clerk-react";
 import { Transition } from "@headlessui/react";
 import { IconButton, Spinner } from "@material-tailwind/react";
 import { Check, Microphone } from "@phosphor-icons/react";
@@ -27,7 +28,36 @@ async function generateFeedback(args: { chatId: string; message: string; languag
   });
 }
 
-async function generateResponse(args: { config: Omit<Profile, "name">; history: string[]; message: string }) {
+async function saveKnowledge(args: { userId: string; message: string }) {
+  await fetch(import.meta.env.VITE_BACKEND_URL + "/platform/save-knowledge", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(args),
+  });
+}
+
+async function performRecall(args: { userId: string; message: string }) {
+  const res: string[] = await fetch(import.meta.env.VITE_BACKEND_URL + "/platform/perform-recall", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(args),
+  }).then(v => v.json());
+
+  console.log({ res });
+
+  return res;
+}
+
+async function generateResponse(args: {
+  config: Omit<Profile, "name">;
+  history: string[];
+  message: string;
+  knowledge: string[];
+}) {
   const res: { text: string; mp3buffer: any } = await fetch(
     import.meta.env.VITE_BACKEND_URL + "/platform/generate-response",
     {
@@ -50,6 +80,7 @@ export default function ChatPage() {
 
   const { connect, toggleMicrophone, microphone, caption } = useMicrophone();
 
+  const { user } = useUser();
   const { profile } = useProfile();
 
   const [, generateResponseFn] = useAsyncFn(async () => {
@@ -57,6 +88,7 @@ export default function ChatPage() {
 
     addMessage({ message: "", isUser: false, isLoading: true });
 
+    // store user's message
     await convex.mutation(api.chats.addMessageToChat, {
       chatId: chatId!,
       // @ts-ignore
@@ -69,12 +101,16 @@ export default function ChatPage() {
       languageLearning: profile!.languageLearning,
     });
 
+    const relevantKnowledge = await performRecall({ userId: user!.id, message: _history[_history.length - 1].message });
     const res: { text: string; mp3buffer: any } = await generateResponse({
       // @ts-ignore
       config: { ...profile, name: undefined },
       history: _history.slice(0, -1).map(({ message }) => message),
       message: _history[_history.length - 1].message,
+      knowledge: relevantKnowledge,
     });
+
+    saveKnowledge({ userId: user!.id, message: _history[_history.length - 1].message });
 
     addMessage({ message: res.text, isUser: false });
     await convex.mutation(api.chats.addMessageToChat, {
@@ -101,7 +137,7 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (history.length === 0) {
-      convex.query(api.chats.getChat, { chatId: chatId! }).then(data => overrideHistory(data.messages));
+      convex.query(api.chats.getChat, { chatId: chatId! }).then(data => overrideHistory(data!.messages));
     }
   }, [history.length]);
 

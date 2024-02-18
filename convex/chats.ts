@@ -32,8 +32,10 @@ export const addMessageToChat = mutation({
       .filter(q => q.eq(q.field("_id"), args.chatId))
       .first();
 
+    if (!chatDoc) return;
+
     return await ctx.db.patch<"chats">(args.chatId as Id<"chats">, {
-      messages: [...chatDoc.messages, args.message],
+      messages: [...chatDoc!.messages, args.message],
     });
   },
 });
@@ -54,7 +56,7 @@ export const getChatsProficiencyLevel = query({
     if (chats) {
       let totalScore = 0;
       chats.forEach(chat => {
-        totalScore += proficiencyLevels.indexOf(chat.proficiencyLevel) + 1;
+        totalScore += proficiencyLevels.indexOf(chat.proficiencyLevel || "Novice") + 1;
       });
       averageScore = totalScore / chats.length;
     }

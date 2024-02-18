@@ -16,6 +16,7 @@ import type {
 } from "convex/server";
 import type * as chats from "../chats.js";
 import type * as feedbacks from "../feedbacks.js";
+import type * as knowledge from "../knowledge.js";
 import type * as profiles from "../profiles.js";
 
 /**
@@ -29,6 +30,7 @@ import type * as profiles from "../profiles.js";
 declare const fullApi: ApiFromModules<{
   chats: typeof chats;
   feedbacks: typeof feedbacks;
+  knowledge: typeof knowledge;
   profiles: typeof profiles;
 }>;
 export declare const api: FilterApi<

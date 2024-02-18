@@ -3,6 +3,8 @@ import { Elysia, t } from "elysia";
 
 import generateFeedback from "~/handlers/platform/generate-feedback";
 import initChat from "~/handlers/platform/init-chat";
+import performRecall from "~/handlers/platform/perform-recall";
+import saveKnowledge from "~/handlers/platform/save-knowledge";
 
 import generateResponse from "./handlers/platform/generate-response";
 
@@ -27,6 +29,7 @@ const app = new Elysia({ prefix: "api" })
           }),
           history: t.Array(t.String()),
           message: t.Optional(t.String()),
+          knowledge: t.Optional(t.Array(t.String())),
         }),
       })
       .post("/init-chat", ({ body }) => initChat(body), {
@@ -46,6 +49,18 @@ const app = new Elysia({ prefix: "api" })
           chatId: t.String(),
           message: t.String(),
           languageLearning: t.String(),
+        }),
+      })
+      .post("/save-knowledge", ({ body }) => saveKnowledge(body), {
+        body: t.Object({
+          message: t.String(),
+          userId: t.String(),
+        }),
+      })
+      .post("/perform-recall", ({ body }) => performRecall(body), {
+        body: t.Object({
+          message: t.String(),
+          userId: t.String(),
         }),
       })
   )

@@ -10,6 +10,9 @@ const GenerateResponsePrompt = await Bun.file("../../packages/prompts/GenerateRe
 const QuestionPrompt =
   "\n\nDon't introduce the conversation to the user. Ask a specific, open-ended, thought-provoking question that is related to the user's specific interests. Only ask ONE question. Keep the length around 1-2 sentences.";
 
+const AdditionalContextPrompt =
+  "\n\nHere is some additional context provided by the user you can use in your response:\n{{addlContext}}";
+
 async function textToSpeechInputStreaming(textIterator: AsyncGenerator<string, void>) {
   const uri = `wss://api.elevenlabs.io/v1/text-to-speech/pMsXgVXv3BLzUgSXRplE/stream-input?model_id=eleven_multilingual_v1`;
 
@@ -59,17 +62,39 @@ export default async function generateResponse({
   config,
   history,
   message,
+  knowledge,
 }: {
   config: Omit<Profile, "name">;
   history: string[];
   message?: string;
+  knowledge?: string[];
 }) {
+  let systemPrompt = Mustache.render(GenerateResponsePrompt, config);
+
+  if (!message) systemPrompt += QuestionPrompt;
+  if (knowledge && knowledge.length > 0)
+    systemPrompt += Mustache.render(AdditionalContextPrompt, { addlContext: knowledge.map(item => `\n"${item}"`) });
+
+  console.log({
+    model: "NousResearch/Nous-Hermes-2-Yi-34B" as any,
+    messages: [
+      {
+        role: "system",
+        content: systemPrompt,
+      },
+      ...history.map((message, i) => ({ role: i % 2 === 0 ? "assistant" : "user", content: message || "" })),
+      { role: "user", content: message || "" },
+    ].filter(message => !!message) as ChatCompletionMessageParam[],
+    stream: true,
+    temperature: 1,
+  });
+
   const response = await openai.chat.completions.create({
     model: "NousResearch/Nous-Hermes-2-Yi-34B" as any,
     messages: [
       {
         role: "system",
-        content: Mustache.render(GenerateResponsePrompt, config) + (message ? "" : QuestionPrompt),
+        content: systemPrompt,
       },
       ...history.map((message, i) => ({ role: i % 2 === 0 ? "assistant" : "user", content: message || "" })),
       { role: "user", content: message || "" },
