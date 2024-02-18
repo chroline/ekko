@@ -2,9 +2,12 @@ import { WarningCircle } from "@phosphor-icons/react";
 import { useQuery } from "convex/react";
 import { useParams } from "react-router";
 
+import { useEffect } from "react";
+
 import { api } from "~/convex/_generated/api";
 import proficiencyColorMap from "~/lib/proficiencyColorMap.ts";
 import proficiencyScoreMap from "~/lib/proficiencyScoreMap.ts";
+import { convex } from "~/lib/utils.ts";
 
 function FeedbackDisplay() {
   const { chatId } = useParams<{ chatId: string }>();
@@ -20,6 +23,12 @@ function FeedbackDisplay() {
       .reduce((a, b) => a + b, 0) || 0) / (data?.length || 1)
   );
   const proficiencyLevel = Object.entries(proficiencyScoreMap).filter(([_, score]) => score === overallScore)[0]?.[0];
+
+  useEffect(() => {
+    if (!!data) {
+      convex.mutation(api.chats.setChatProficiencyLevel, { chatId: chatId!, proficiencyLevel });
+    }
+  }, [chatId, data]);
 
   return (
     <div>

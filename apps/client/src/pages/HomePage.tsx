@@ -1,5 +1,7 @@
+import { useUser } from "@clerk/clerk-react";
 import { Button } from "@material-tailwind/react";
 import clsx from "clsx";
+import { useQuery } from "convex/react";
 import { useNavigate } from "react-router";
 import tinycolor from "tinycolor2";
 
@@ -7,6 +9,7 @@ import { useEffect, useState } from "react";
 
 import AppBar from "~/components/AppBar.tsx";
 import Header from "~/components/Header";
+import { api } from "~/convex/_generated/api";
 import proficiencyColorMap from "~/lib/proficiencyColorMap.ts";
 import useProfile from "~/lib/useProfile.ts";
 
@@ -14,6 +17,9 @@ function HomePage() {
   const navigate = useNavigate();
 
   const { profile } = useProfile();
+  const { user } = useUser();
+
+  const proficiencyLevel = useQuery(api.chats.getChatsProficiencyLevel, { userId: user!.id }) || "Novice";
 
   const [faded, setFaded] = useState(true);
   const startConvo = () => {
@@ -36,9 +42,9 @@ function HomePage() {
         <div
           className={`mx-auto flex h-64 w-64 flex-col items-center justify-center space-y-3 rounded-full bg-white shadow-xl`}
           style={{
-            color: proficiencyColorMap[profile!.proficiencyLevel as keyof typeof proficiencyColorMap],
+            color: proficiencyColorMap[proficiencyLevel as keyof typeof proficiencyColorMap],
             boxShadow: `0px 5px 20px 10px rgba(0, 0, 0, 0.08), inset ${tinycolor(
-              proficiencyColorMap[profile!.proficiencyLevel as keyof typeof proficiencyColorMap]
+              proficiencyColorMap[proficiencyLevel as keyof typeof proficiencyColorMap]
             )
               .setAlpha(0.2)
               .toString()} 0px 5px 20px 10px`,

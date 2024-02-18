@@ -39,21 +39,15 @@ export default async function generateFeedback({
     if (delta.content) feedback += delta.content;
   }
 
-  const proficiencyInference = await fetch(
-    "https://us-central1-aiplatform.googleapis.com/v1/projects/treehacks2024-414614/locations/us-central1/endpoints/5619746866074746880:predict",
-    {
-      method: "POST",
-      body: JSON.stringify({ instances: [message] }),
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.GCLOUD_ACCESS_TOKEN}` },
-    }
-  ).then(v => v.json());
-
-  console.log(proficiencyInference, { instances: [message] });
+  const [proficiencyInference] = await predictionServiceClient.predict({
+    endpoint: "projects/treehacks2024-414614/locations/us-central1/endpoints/5619746866074746880",
+    instances: [{ stringValue: message }],
+  });
 
   await convex.mutation(api.feedbacks.createFeedback, {
     chatId,
     message,
     feedback,
-    proficiency: proficiencyInference.predictions?.[0] || "Novice",
+    proficiency: proficiencyInference.predictions?.[0].stringValue || "Novice",
   });
 }

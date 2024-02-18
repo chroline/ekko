@@ -38,27 +38,38 @@ export const addMessageToChat = mutation({
   },
 });
 
-
 export const getChatsProficiencyLevel = query({
-  args: { userId: v.id("user") },
+  args: { userId: v.string() },
   handler: async (ctx, args) => {
     if (!args.userId) return undefined;
+
     const chats = await ctx.db
       .query("chats")
       .filter(q => q.eq(q.field("userId"), args.userId))
-      .take(5)
-      var averageScore = -1;
-      if (chats) {
-        let totalScore = 0;
-        chats.forEach(chat => {
-          totalScore += chat.score;
-        });
-        averageScore = totalScore / chats.length;
-      }
+      .take(5);
 
-    const proficiencyLevels = ["Novice", "Intermediate", "Proficient", "Advanced", "Fluent"];
-    const closestProficiencyLevel = proficiencyLevels[Math.round(averageScore) - 1];
+    const proficiencyLevels = ["Novice", "Intermediate", "Advanced", "Superior", "Distinguished"];
 
-    return closestProficiencyLevel;
+    let averageScore = -1;
+    if (chats) {
+      let totalScore = 0;
+      chats.forEach(chat => {
+        totalScore += proficiencyLevels.indexOf(chat.proficiencyLevel) + 1;
+      });
+      averageScore = totalScore / chats.length;
+    }
+
+    if (isNaN(averageScore)) return "Novice";
+
+    return proficiencyLevels[Math.round(averageScore) - 1];
+  },
+});
+
+export const setChatProficiencyLevel = mutation({
+  args: { chatId: v.string(), proficiencyLevel: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db.patch<"chats">(args.chatId as Id<"chats">, {
+      proficiencyLevel: args.proficiencyLevel,
+    });
   },
 });
