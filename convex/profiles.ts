@@ -27,3 +27,5 @@ export const createProfile = mutation({
     await ctx.db.insert("profiles", args);
   },
 });
+
+

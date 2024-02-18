@@ -22,3 +22,28 @@ export const createChat = mutation({
     });
   },
 });
+
+
+export const getChatsProficiencyLevel = query({
+  args: { userId: v.id("user") },
+  handler: async (ctx, args) => {
+    if (!args.userId) return undefined;
+    const chats = await ctx.db
+      .query("chats")
+      .filter(q => q.eq(q.field("userId"), args.userId))
+      .take(5) 
+      var averageScore = -1;
+      if (chats) {
+        let totalScore = 0;
+        chats.forEach(chat => {
+          totalScore += chat.score;
+        });
+        averageScore = totalScore / chats.length;
+      } 
+
+    const proficiencyLevels = ["Novice", "Intermediate", "Proficient", "Advanced", "Fluent"];
+    const closestProficiencyLevel = proficiencyLevels[Math.round(averageScore) - 1];
+
+    return closestProficiencyLevel;
+  },
+});
