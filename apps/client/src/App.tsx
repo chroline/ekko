@@ -4,6 +4,7 @@ import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { Routes, Route } from "react-router-dom";
 
 import AuthGuard from "~/components/AuthGuard.tsx";
+import ChatPage from "~/pages/ChatPage.tsx";
 import HomePage from "~/pages/HomePage.tsx";
 import SignInPage from "~/pages/SignInPage.tsx";
 import SignUpPage from "~/pages/SignUpPage.tsx";
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path={"/"} element={<AuthGuard />}>
             <Route index element={<HomePage />} />
+            <Route path={"/chat"} element={<ChatPage />} />
           </Route>
           <Route path={"/auth/sign-in"} element={<SignInPage />} />
           <Route path={"/auth/sign-up"} element={<SignUpPage />} />

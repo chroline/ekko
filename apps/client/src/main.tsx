@@ -12,11 +12,11 @@ import "./globals.css";
 import "./main.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  <>
     <BrowserRouter>
       <ThemeProvider value={theme}>
         <App />
       </ThemeProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </>
 );

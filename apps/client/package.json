@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^4.25.2",
+    "@deepgram/sdk": "^3.1.9",
+    "@headlessui/react": "^1.7.18",
     "@material-tailwind/react": "^2.1.9",
     "@phosphor-icons/react": "^2.0.15",
+    "@uidotdev/usehooks": "^2.4.1",
     "clsx": "^2.1.0",
     "convex": "^1.8.0",
     "hamburger-react": "^2.5.0",
@@ -20,7 +23,9 @@
     "react-dom": "^18.2.0",
     "react-flip-toolkit": "^7.1.0",
     "react-router-dom": "^6.22.1",
-    "vite-tsconfig-paths": "^4.3.1"
+    "react-use": "^17.5.0",
+    "vite-tsconfig-paths": "^4.3.1",
+    "zustand": "^4.5.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

@@ -1,5 +1,6 @@
 import { Button } from "@material-tailwind/react";
 import clsx from "clsx";
+import { useNavigate } from "react-router";
 
 import { useState } from "react";
 
@@ -7,14 +8,21 @@ import AppBar from "~/components/AppBar.tsx";
 import Header from "~/components/Header";
 
 function HomePage() {
-  const [fullScreen, setFullScreen] = useState(false);
-  const toggleFullScreen = () => setFullScreen(prevState => !prevState);
+  const navigate = useNavigate();
+
+  const [faded, setFaded] = useState(false);
+  const startConvo = () => {
+    setFaded(true);
+    setTimeout(() => {
+      navigate("/chat");
+    }, 500);
+  };
 
   return (
-    <div className={clsx("gradient-bg transition", fullScreen && "opacity-0")}>
+    <div className={clsx("gradient-bg transition", faded && "opacity-0")}>
       <AppBar />
       <div className={clsx("px-8 transition")}>
-        <Header contentFluency="Proficient" contentLang="Spanish" contentSmthn="Else" />
+        <Header />
 
         <div
           className={
@@ -30,7 +38,7 @@ function HomePage() {
 
         <div className={"flex justify-center pt-24"}>
           <Button
-            onClick={toggleFullScreen}
+            onClick={startConvo}
             color={"purple"}
             variant={"gradient"}
             size={"lg"}
