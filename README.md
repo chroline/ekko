@@ -1,4 +1,5 @@
 # Ekko
+**Elevate your foreign language fluency with tailored guidance and individualized verbal conversation practice on Ekko.**
 
 
 ## Background 
