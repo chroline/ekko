@@ -48,7 +48,7 @@ function ErrorCard(props: any) {
     <div className={"mb-4 mt-2 rounded-xl border-slate-950 bg-white p-4 drop-shadow-lg"}>
       <WarningCircle className="-mt-1 mr-1 inline-block" size={20} fill="#904bff" />
       <h6 className={"inline-block font-semibold text-purple-600"}>{props.errName}</h6>
-      <p className={"ml-6 text-purple-600"}>{props.errDescription}</p>
+      <p className={"ml-6 whitespace-pre-line text-purple-600"}>{props.errDescription}</p>
     </div>
   );
 }
