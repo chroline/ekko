@@ -39,7 +39,10 @@ cd DIRECTORY; bun install
 ## Contact(s)
 
 Nick Marker: <a href="mailto:ncmarker@usc.edu">ncmarker@usc.edu</a>
+<br/>
 Cole Gawin: <a href="mailto:gawin@usc.edu">gawin@usc.edu</a>
+<br/>
 Angelina Choy: <a href="mailto:choyange@usc.edu">choyange@usc.edu</a>
+<br/>
 
 Project Link: <a href="#">temp</a>
