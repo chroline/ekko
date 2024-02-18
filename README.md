@@ -1,5 +1,6 @@
 # Ekko
 
+
 ## Background 
 
 Multilingualism is in. In today’s interconnected world, the ability to communicate in multiple languages is not only valuable, but imperative to personal and professional success. Whether it be conversing with business professionals during international commerce exchanges, preparing for standardized school language exams, serving as a journalist or diplomat on the international stage, or simply wanting to converse more fluently with your loved ones, everybody can benefit from conversing in a foreign language. However, traditional curriculum-based language learning methods rely on repetitive exercises and  lack personalization, overlooking verbal fluency markers such as verbal precision, language variation, and personal goals. A key indication of an advanced speaker is the ability to engage in debates and convey subtle shades of meaning effectively, a skill that cannot be developed solely through the use of apps centered around memorization.
@@ -8,13 +9,17 @@ As a 2nd generation Mandarin and Cantonese speaker, one of our team members real
 
 Whether you’re a busy professional looking to enhance your global marketability or a student aiming to broaden your cultural horizons during study abroad, Ekko enables you to access verbal language practice anytime, anywhere, offering you the personalization and flexibility to learn at your own pace and develop as a global citizen.
 
+
 ## What Ekko Does
 
 With Ekko, you only talk about what you actually want to talk about. Once you enter your basic onboarding information into Ekko such as your learning goals and interests, the app will then prompt you to a simple user interface where you can start your conversation. After each response, Ekko will then give personalized feedback on your conversational performance by catching your errors and providing you with an ACTFL based proficiency level. Conversations and feedback are personalized to your learning goals; for example, if you are using Ekko to prepare for career oriented work purposes, Ekko would generate prompts that you’d likely encounter in the workplace and the feedback would likely be centered around making your diction more formal. Similarly, if you were simply using Ekko to converse with friends and family, conversation topics and corrections provided by the chatbot would be more casual. 
 
 Ekko saves your speaking errors and transfers those language specific content errors to tailor feedback to your language learning goals. For example, if you were to say “me llamo es Cole” as opposed to the correct version: “me llamo Cole”, Ekko would save that error to check in the future. Using this unique feature, Ekko also makes connections between your learning language of interest and languages you currently speak (inputted during the onboarding process), drawing parallels between the two. 
 
+
 ## Built With
+
+
 
 ## Setup
 
@@ -29,6 +34,7 @@ cd DIRECTORY; bun install
 ```
 
 3. ...
+
 
 ## Contact(s)
 
