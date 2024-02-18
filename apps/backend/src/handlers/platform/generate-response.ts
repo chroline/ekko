@@ -1,6 +1,8 @@
 import Mustache from "mustache";
 import { ChatCompletionMessageParam } from "openai/resources";
 
+import Profile from "@app/common/types/Profile";
+
 import { openai } from "~/lib/utils";
 
 const GenerateResponsePrompt = await Bun.file("../../packages/prompts/GenerateResponse.mustache").text();
@@ -17,7 +19,6 @@ async function textToSpeechInputStreaming(textIterator: AsyncGenerator<string, v
 
       websocket.addEventListener("message", message => {
         const data = JSON.parse((message.data as Buffer).toString());
-        console.log("got message");
         if (data.audio) audio.push(data.audio);
         else resolve({ text, audio });
       });
@@ -46,12 +47,7 @@ async function textToSpeechInputStreaming(textIterator: AsyncGenerator<string, v
     });
 
     websocket.addEventListener("error", error => {
-      console.log(error);
       reject(error);
-    });
-
-    websocket.addEventListener("close", event => {
-      console.log("Connection closed");
     });
   });
 }
@@ -61,16 +57,11 @@ export default async function generateResponse({
   history,
   message,
 }: {
-  config: {
-    languageLearning: string;
-    knownLanguages: string;
-    interests: string;
-    learningGoal: string;
-    proficiencyLevel: string;
-  };
+  config: Omit<Profile, "name">;
   history: string[];
   message?: string;
 }) {
+  console.log({ config, history });
   const response = await openai.chat.completions.create({
     model: "NousResearch/Nous-Hermes-2-Yi-34B" as any,
     messages: [
@@ -99,8 +90,6 @@ export default async function generateResponse({
   const { text, audio } = await textToSpeechInputStreaming(textIterator());
 
   const mp3buffer = Buffer.concat(audio.map(output => Buffer.from(output, "base64")));
-
-  await Bun.write(`output.mp3`, mp3buffer);
 
   return { text, mp3buffer };
 }

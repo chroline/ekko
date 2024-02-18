@@ -1,6 +1,8 @@
 import { cors } from "@elysiajs/cors";
 import { Elysia, t } from "elysia";
 
+import initChat from "~/handlers/platform/init-chat";
+
 import generateResponse from "./handlers/platform/generate-response";
 
 const app = new Elysia({ prefix: "api" })
@@ -12,19 +14,32 @@ const app = new Elysia({ prefix: "api" })
     };
   })
   .group("/platform", app =>
-    app.post("/generate-response", ({ body }) => generateResponse(body), {
-      body: t.Object({
-        config: t.Object({
-          languageLearning: t.String(),
-          knownLanguages: t.String(),
-          interests: t.String(),
-          learningGoal: t.String(),
-          proficiencyLevel: t.String(),
+    app
+      .post("/generate-response", ({ body }) => generateResponse(body), {
+        body: t.Object({
+          config: t.Object({
+            languageLearning: t.String(),
+            knownLanguages: t.String(),
+            interests: t.String(),
+            learningGoal: t.String(),
+            proficiencyLevel: t.String(),
+          }),
+          history: t.Array(t.String()),
+          message: t.Optional(t.String()),
         }),
-        history: t.Array(t.String()),
-        message: t.Optional(t.String()),
-      }),
-    })
+      })
+      .post("/init-chat", ({ body }) => initChat(body), {
+        body: t.Object({
+          config: t.Object({
+            languageLearning: t.String(),
+            knownLanguages: t.String(),
+            interests: t.String(),
+            learningGoal: t.String(),
+            proficiencyLevel: t.String(),
+          }),
+          userId: t.String(),
+        }),
+      })
   )
   .get("/", () => "Hello world")
   .listen(8080);
