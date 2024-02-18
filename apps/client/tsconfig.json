@@ -23,7 +23,7 @@
     "paths": {
       "~/*": ["./src/*"],
       "~/convex/*": ["./../../convex/*"],
-      "@app/common/*": ["../../packages/common/src/*"]
+      "@app/common/*": ["../../packages/common/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

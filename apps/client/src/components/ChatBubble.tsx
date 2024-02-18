@@ -16,7 +16,7 @@ export default function ChatBubble({ message, isUser }: { message: string; isUse
           {message === "" ? (
             <Spinner className={"h-8 w-8"} />
           ) : (
-            <p className={clsx("flex-1 rounded-md bg-gray-200 p-2")}>{message}</p>
+            <p className={clsx("flex-1 rounded-lg bg-gray-200 p-2")}>{message}</p>
           )}
         </>
       )}
