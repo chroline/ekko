@@ -14,17 +14,16 @@ export const getProfile = query({
   },
 });
 
-
 export const createProfile = mutation({
-  args: { 
+  args: {
     languageLearning: v.string(),
-    userName: v.string(),
+    name: v.string(),
     knownLanguages: v.string(),
     interests: v.string(),
     learningGoal: v.string(),
+    id: v.string(),
   },
   handler: async (ctx, args) => {
-    const profileId = await ctx.db.insert("profiles", args);
-    // do something with `profileId`
+    await ctx.db.insert("profiles", args);
   },
 });
