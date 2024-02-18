@@ -100,12 +100,9 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
 
-
     "paths": {
       "~/*": ["./src/*"],
-      "~/convex/*": ["./../../convex/*"],
-      "@app/common/*": ["../../packages/common/src/*"],
-      "@app/prompts/*": ["../../packages/prompts/*"]
+      "@app/common/*": ["../../packages/common/*"]
     }
   }
 }
