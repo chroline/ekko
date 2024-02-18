@@ -12,13 +12,14 @@ const useChatHistory = create<{
   history: [],
   addMessage: (message: Message) =>
     set(state => ({
-      history: [...state.history.filter(message => !message.isLoading), message],
+      history: [...state.history.filter(v => !v.isLoading), message],
     })),
   updateLastMessage: (message: Partial<Message>) =>
     // @ts-ignore
     set(state => {
-      const recent = state.history.pop();
-      return { history: [...state.history, { ...recent, ...message }] };
+      const newHistory = [...state.history];
+      const recent = newHistory.pop();
+      return { history: [...newHistory, { ...recent, ...message }] };
     }),
   overrideHistory: (history: Message[]) => set({ history }),
   clearHistory: () => set({ history: [] }),

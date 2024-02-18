@@ -88,8 +88,6 @@ export default function useMicrophone() {
     processQueue();
   }, [connection, queue, remove, first, size, isProcessing, isListening]);
 
-  console.log(caption);
-
   return {
     toggleMicrophone,
     microphone,

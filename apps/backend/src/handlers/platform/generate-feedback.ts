@@ -1,9 +1,13 @@
+import { PredictionServiceClient } from "@google-cloud/aiplatform";
+import { google } from "@google-cloud/aiplatform/build/protos/protos";
 import Mustache from "mustache";
 import { ChatCompletionMessageParam } from "openai/resources";
 
 import Profile from "@app/common/types/Profile";
 
-import { api, convex, openai } from "~/lib/utils";
+import { api, convex, openai, predictionServiceClient } from "~/lib/utils";
+
+import IPredictResponse = google.cloud.aiplatform.v1.IPredictResponse;
 
 const GenerateFeedbackPrompt = await Bun.file("../../packages/prompts/GenerateFeedback.mustache").text();
 
@@ -44,12 +48,10 @@ export default async function generateFeedback({
     }
   ).then(v => v.json());
 
-  console.log(proficiencyInference, { Authorization: `Bearer ${process.env.GCLOUD_ACCESS_TOKEN}` });
-
   await convex.mutation(api.feedbacks.createFeedback, {
     chatId,
     message,
     feedback,
-    proficiency: proficiencyInference.predictions[0],
+    proficiency: proficiencyInference.predictions?.[0].stringValue || "Novice",
   });
 }

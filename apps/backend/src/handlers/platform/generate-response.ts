@@ -7,6 +7,9 @@ import { openai } from "~/lib/utils";
 
 const GenerateResponsePrompt = await Bun.file("../../packages/prompts/GenerateResponse.mustache").text();
 
+const QuestionPrompt =
+  "\n\nDon't introduce the conversation to the user. Ask a specific, open-ended, thought-provoking question that is related to the user's specific interests. Only ask ONE question. Keep the length around 1-2 sentences.";
+
 async function textToSpeechInputStreaming(textIterator: AsyncGenerator<string, void>) {
   const uri = `wss://api.elevenlabs.io/v1/text-to-speech/pMsXgVXv3BLzUgSXRplE/stream-input?model_id=eleven_multilingual_v1`;
 
@@ -61,17 +64,12 @@ export default async function generateResponse({
   history: string[];
   message?: string;
 }) {
-  console.log({ config, history });
   const response = await openai.chat.completions.create({
     model: "NousResearch/Nous-Hermes-2-Yi-34B" as any,
     messages: [
       {
         role: "system",
-        content:
-          Mustache.render(GenerateResponsePrompt, config) +
-          (message
-            ? ""
-            : "\n\nDon't introduce the conversation to the user. Please start the conversation like you were the user's longtime friend. Ask a specific, open-ended, thought-provoking question. Keep the length around 1-2 sentences."),
+        content: Mustache.render(GenerateResponsePrompt, config) + (message ? "" : QuestionPrompt),
       },
       ...history.map((message, i) => ({ role: i % 2 === 0 ? "assistant" : "user", content: message || "" })),
       { role: "user", content: message || "" },

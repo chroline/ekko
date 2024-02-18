@@ -6,7 +6,10 @@ export const getFeedbacksFromChat = query({
   args: { chatId: v.string() },
   handler: async (ctx, args) => {
     if (!args.chatId) return [];
-    return ctx.db.query("feedbacks").filter(q => q.eq(q.field("chatId"), args.chatId));
+    return ctx.db
+      .query("feedbacks")
+      .filter(q => q.eq(q.field("chatId"), args.chatId))
+      .collect();
   },
 });
 

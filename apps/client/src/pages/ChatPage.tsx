@@ -2,7 +2,7 @@ import { Transition } from "@headlessui/react";
 import { IconButton, Spinner } from "@material-tailwind/react";
 import { Check, Microphone } from "@phosphor-icons/react";
 import clsx from "clsx";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useAsyncFn } from "react-use";
 
 import { useEffect } from "react";
@@ -18,13 +18,15 @@ import useProfile from "~/lib/useProfile.ts";
 import { convex, playAudio } from "~/lib/utils.ts";
 
 async function generateFeedback(args: { chatId: string; message: string; languageLearning: string }) {
-  await fetch(import.meta.env.VITE_BACKEND_URL + "/platform/generate-feedback", {
+  console.log("hey");
+  const l = await fetch(import.meta.env.VITE_BACKEND_URL + "/platform/generate-feedback", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(args),
   });
+  console.log(l);
 }
 
 async function generateResponse(args: { config: Omit<Profile, "name">; history: string[]; message: string }) {
@@ -44,6 +46,7 @@ async function generateResponse(args: { config: Omit<Profile, "name">; history: 
 
 export default function ChatPage() {
   const { chatId } = useParams<{ chatId: string }>();
+  const navigate = useNavigate();
 
   const { history, addMessage, updateLastMessage, overrideHistory } = useChatHistory();
 
@@ -52,23 +55,27 @@ export default function ChatPage() {
   const { profile } = useProfile();
 
   const [, generateResponseFn] = useAsyncFn(async () => {
+    const _history = useChatHistory.getState().history;
+
+    addMessage({ message: "", isUser: false, isLoading: true });
+
     await convex.mutation(api.chats.addMessageToChat, {
       chatId: chatId!,
       // @ts-ignore
-      message: { ...history[history.length - 1], isLoading: undefined },
+      message: { ..._history[_history.length - 1], isLoading: undefined },
     });
 
     generateFeedback({
       chatId: chatId!,
-      message: history[history.length - 1].message,
+      message: _history[_history.length - 1].message,
       languageLearning: profile!.languageLearning,
     });
 
     const res: { text: string; mp3buffer: any } = await generateResponse({
       // @ts-ignore
       config: { ...profile, name: undefined },
-      history: history.slice(0, -1).map(({ message }) => message),
-      message: history[history.length - 1].message,
+      history: _history.slice(0, -1).map(({ message }) => message),
+      message: _history[_history.length - 1].message,
     });
 
     addMessage({ message: res.text, isUser: false });
@@ -90,7 +97,6 @@ export default function ChatPage() {
     // microphone was previously on
     else {
       updateLastMessage({ isUser: true, isLoading: false });
-      addMessage({ message: "", isUser: false, isLoading: true });
       generateResponseFn();
     }
   }
@@ -162,7 +168,7 @@ export default function ChatPage() {
               placeholder={undefined}
               className={clsx("p-4")}
               color={"green"}
-              onClick={() => {}}
+              onClick={() => navigate(`/review/${chatId}`)}
               variant={"gradient"}
             >
               <Check className={"h-8 w-8"} weight={"bold"} />

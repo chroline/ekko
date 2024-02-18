@@ -10,3 +10,11 @@ export const openai = new OpenAI({
 });
 
 export const convex = new ConvexHttpClient(process.env.CONVEX_URL as string);
+
+export const predictionServiceClient = new PredictionServiceClient({
+  apiEndpoint: "us-central1-aiplatform.googleapis.com",
+  // credentials: {
+  //   client_email: process.env.GCLOUD_CLIENT_EMAIL,
+  //   private_key: process.env.GCLOUD_PRIVATE_KEY,
+  // },
+});

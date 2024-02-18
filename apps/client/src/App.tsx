@@ -28,7 +28,7 @@ function App() {
               <Route path={"/chat/:chatId"} element={<ChatPage />} />
             </Route>
             <Route path={"/onboarding"} element={<Onboarding />} />
-            <Route path={"/feedbackpage"} element={<FeedbackPage />} />
+            <Route path={"/review/:chatId"} element={<FeedbackPage />} />
           </Route>
           <Route path={"/auth/sign-in/*"} element={<SignInPage />} />
           <Route path={"/auth/sign-up/*"} element={<SignUpPage />} />

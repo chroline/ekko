@@ -9,6 +9,7 @@ import generateResponse from "./handlers/platform/generate-response";
 const app = new Elysia({ prefix: "api" })
   .use(cors())
   .onError(({ code, error }) => {
+    console.error(error);
     return {
       error,
     };
