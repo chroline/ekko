@@ -11,12 +11,10 @@ import AppBar from "~/components/AppBar.tsx";
 import Header from "~/components/Header";
 import { api } from "~/convex/_generated/api";
 import proficiencyColorMap from "~/lib/proficiencyColorMap.ts";
-import useProfile from "~/lib/useProfile.ts";
 
 function HomePage() {
   const navigate = useNavigate();
 
-  const { profile } = useProfile();
   const { user } = useUser();
 
   const proficiencyLevel = useQuery(api.chats.getChatsProficiencyLevel, { userId: user!.id }) || "Novice";
@@ -51,7 +49,7 @@ function HomePage() {
           }}
         >
           <p className={"text-lg font-medium"}>PROFICIENCY</p>
-          <p className={"text-3xl font-bold"}>{profile!.proficiencyLevel}</p>
+          <p className={"text-3xl font-bold"}>{proficiencyLevel}</p>
           <p className={"inter-font-black text-[#3b3b3b]"}>🇪🇸 Spanish</p>
         </div>
 
