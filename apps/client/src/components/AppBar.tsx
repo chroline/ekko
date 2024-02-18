@@ -1,3 +1,4 @@
+import { useAuth } from "@clerk/clerk-react";
 import { ArrowLeft, User } from "@phosphor-icons/react";
 import clsx from "clsx";
 import Hamburger from "hamburger-react";
@@ -9,6 +10,7 @@ import { useState } from "react";
 export default function AppBar() {
   const { pathname } = useLocation();
   const [isOpen, setOpen] = useState(false);
+  const { signOut } = useAuth();
 
   return (
     <div
@@ -25,9 +27,9 @@ export default function AppBar() {
         </Link>
       )}
 
-      <p className={"text-xl font-bold"}>EKKO</p>
+      <p className={"font-heading text-xl font-bold"}>EKKO</p>
 
-      <div className={"p-2"}>
+      <div className={"p-2"} onClick={signOut}>
         <User className={"h-7 w-7"} weight={"bold"} />
       </div>
     </div>

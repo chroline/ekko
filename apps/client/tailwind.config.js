@@ -7,6 +7,7 @@ export default withMT({
   theme: {
     fontFamily: {
       sans: ['"Inter", sans-serif'],
+      heading: ['"Fredoka", sans-serif'],
     },
     colors: {
       purple: {
