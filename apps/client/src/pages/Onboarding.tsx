@@ -7,13 +7,13 @@ function Onboarding() {
 
     const [formData, setFormData] = useState({
         language: '',
+        userName: '',
         knownLanguages: '',
         hobbies: '',
         purpose: '',
       });
 
     const handleChange = (e: any) => {
-        console.log({e})
         if (!e.target) { return null; }
         const { name, value } = e.target;
             setFormData((prevData) => ({
@@ -29,12 +29,12 @@ function Onboarding() {
 
 
   return (
-    <div className='text-purple-500 min-h-[100vh] bg-white p-12'>
-      <h1 className="text-3xl font-bold mb-15">Learning Preferences</h1>
+    <div className={'text-purple-500 min-h-[100vh] bg-white p-12'}>
+      <h1 className={"text-3xl font-bold mb-15"}>Learning Preferences</h1>
       <div className="w-72 space-y-4">
-        <p className="my-5">Select the language you are trying to learn.</p>
+        <p className={"my-5"}>Select the language you are trying to learn.</p>
 
-        <Select 
+        <Select
             variant="static" 
             label="" 
             placeholder="--Select Language--"
@@ -44,6 +44,21 @@ function Onboarding() {
         >
             <Option value="spanish">Spanish</Option>
         </Select>
+
+        <p>
+          Enter your first name.
+        </p>
+        <Input
+          variant="static"
+          size="lg"
+          crossOrigin="anonymous"
+          label=""
+          placeholder="ex. Nick"
+          name="userName"
+          value={formData.userName}
+          onChange={handleChange}
+
+        />
 
         <p>
           Enter the languages you already know along with the number of years
@@ -58,7 +73,6 @@ function Onboarding() {
           name="knownLanguages"
           value={formData.knownLanguages}
           onChange={handleChange}
-
         />
 
         <p>List any of your hobbies.</p>
