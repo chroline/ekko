@@ -1,5 +1,5 @@
 import { Spinner } from "@material-tailwind/react";
-import { PersonArmsSpread, Robot } from "@phosphor-icons/react";
+import { Robot, Smiley } from "@phosphor-icons/react";
 import clsx from "clsx";
 
 export default function ChatBubble({ message, isUser }: { message: string; isUser: boolean }) {
@@ -8,7 +8,7 @@ export default function ChatBubble({ message, isUser }: { message: string; isUse
       {isUser ? (
         <>
           <p className={clsx("flex-1 rounded-md border-2 p-2")}>{message}</p>
-          <PersonArmsSpread className={"h-8 w-8 text-purple-500"} weight="duotone" />
+          <Smiley className={"h-8 w-8 text-purple-500"} weight="duotone" />
         </>
       ) : (
         <>

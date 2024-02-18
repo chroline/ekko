@@ -1,11 +1,13 @@
 import { Transition } from "@headlessui/react";
 import { IconButton, Spinner } from "@material-tailwind/react";
-import { Microphone } from "@phosphor-icons/react";
+import { Check, Microphone } from "@phosphor-icons/react";
 import clsx from "clsx";
 import { useParams } from "react-router";
 import { useAsyncFn } from "react-use";
 
 import { useEffect } from "react";
+
+import Profile from "@app/common/types/Profile.ts";
 
 import AppBar from "~/components/AppBar.tsx";
 import ChatBubble from "~/components/ChatBubble.tsx";
@@ -14,6 +16,31 @@ import useChatHistory from "~/lib/useChatHistory.ts";
 import useMicrophone from "~/lib/useMicrophone.ts";
 import useProfile from "~/lib/useProfile.ts";
 import { convex, playAudio } from "~/lib/utils.ts";
+
+async function generateFeedback(args: { chatId: string; message: string; languageLearning: string }) {
+  await fetch(import.meta.env.VITE_BACKEND_URL + "/platform/generate-feedback", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(args),
+  });
+}
+
+async function generateResponse(args: { config: Omit<Profile, "name">; history: string[]; message: string }) {
+  const res: { text: string; mp3buffer: any } = await fetch(
+    import.meta.env.VITE_BACKEND_URL + "/platform/generate-response",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(args),
+    }
+  ).then(v => v.json());
+
+  return res;
+}
 
 export default function ChatPage() {
   const { chatId } = useParams<{ chatId: string }>();
@@ -25,24 +52,30 @@ export default function ChatPage() {
   const { profile } = useProfile();
 
   const [, generateResponseFn] = useAsyncFn(async () => {
-    const res: { text: string; mp3buffer: any } = await fetch(
-      import.meta.env.VITE_BACKEND_URL + "/platform/generate-response",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          config: { ...profile, name: undefined },
-          history: history.length > 0 ? history.slice(0, -1).map(({ message }) => message) : [],
-          message: history.length > 0 ? history[history.length - 1].message : undefined,
-        }),
-      }
-    ).then(v => v.json());
+    await convex.mutation(api.chats.addMessageToChat, {
+      chatId: chatId!,
+      // @ts-ignore
+      message: { ...history[history.length - 1], isLoading: undefined },
+    });
 
-    if (history[history.length - 1]?.isLoading) {
-      updateLastMessage({ message: res.text, isUser: false, isLoading: false });
-    } else addMessage({ message: res.text, isUser: false });
+    generateFeedback({
+      chatId: chatId!,
+      message: history[history.length - 1].message,
+      languageLearning: profile!.languageLearning,
+    });
+
+    const res: { text: string; mp3buffer: any } = await generateResponse({
+      // @ts-ignore
+      config: { ...profile, name: undefined },
+      history: history.slice(0, -1).map(({ message }) => message),
+      message: history[history.length - 1].message,
+    });
+
+    addMessage({ message: res.text, isUser: false });
+    await convex.mutation(api.chats.addMessageToChat, {
+      chatId: chatId!,
+      message: { message: res.text, isUser: false },
+    });
 
     await playAudio(res.mp3buffer.data as Iterable<number>);
   }, [history]);
@@ -56,8 +89,9 @@ export default function ChatPage() {
     }
     // microphone was previously on
     else {
-      generateResponseFn();
+      updateLastMessage({ isUser: true, isLoading: false });
       addMessage({ message: "", isUser: false, isLoading: true });
+      generateResponseFn();
     }
   }
 
@@ -104,7 +138,7 @@ export default function ChatPage() {
             <AppBar />
           </div>
           <div className={"mt-16 flex-1 pb-20 pt-6"}>
-            <div className={"space-y-4 px-4 text-[#494949]"}>
+            <div className={"space-y-4 px-4 pb-20 text-[#494949]"}>
               {history.map((message, i) => (
                 <ChatBubble key={i} message={message.message} isUser={message.isUser} />
               ))}
@@ -117,8 +151,21 @@ export default function ChatPage() {
               className={clsx("rounded-full p-10", (history.length === 1 || microphone) && "animate-magnet")}
               color={microphone ? "red" : "purple"}
               onClick={onToggleRecord}
+              variant={"gradient"}
             >
               <Microphone className={"h-10 w-10"} weight={"duotone"} />
+            </IconButton>
+          </div>
+          <div className={"fixed bottom-12 right-8 rounded-full"}>
+            <IconButton
+              size={"lg"}
+              placeholder={undefined}
+              className={clsx("p-4")}
+              color={"green"}
+              onClick={() => {}}
+              variant={"gradient"}
+            >
+              <Check className={"h-8 w-8"} weight={"bold"} />
             </IconButton>
           </div>
         </div>

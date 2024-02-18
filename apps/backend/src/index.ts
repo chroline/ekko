@@ -1,6 +1,7 @@
 import { cors } from "@elysiajs/cors";
 import { Elysia, t } from "elysia";
 
+import generateFeedback from "~/handlers/platform/generate-feedback";
 import initChat from "~/handlers/platform/init-chat";
 
 import generateResponse from "./handlers/platform/generate-response";
@@ -8,7 +9,6 @@ import generateResponse from "./handlers/platform/generate-response";
 const app = new Elysia({ prefix: "api" })
   .use(cors())
   .onError(({ code, error }) => {
-    console.log("sad", error);
     return {
       error,
     };
@@ -38,6 +38,13 @@ const app = new Elysia({ prefix: "api" })
             proficiencyLevel: t.String(),
           }),
           userId: t.String(),
+        }),
+      })
+      .post("/generate-feedback", ({ body }) => generateFeedback(body), {
+        body: t.Object({
+          chatId: t.String(),
+          message: t.String(),
+          languageLearning: t.String(),
         }),
       })
   )

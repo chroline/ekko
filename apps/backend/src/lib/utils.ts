@@ -1,3 +1,4 @@
+import { PredictionServiceClient } from "@google-cloud/aiplatform";
 import { ConvexHttpClient } from "convex/browser";
 import OpenAI from "openai";
 
