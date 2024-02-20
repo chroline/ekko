@@ -10,6 +10,7 @@
   "dependencies": {
     "@elysiajs/cors": "^0.8.0",
     "@google-cloud/aiplatform": "^3.12.0",
+    "convex": "^1.9.1",
     "elysia": "latest",
     "mustache": "^4.2.0",
     "openai": "^4.28.0"
