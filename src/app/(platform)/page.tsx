@@ -40,7 +40,7 @@ export default function DashboardPage() {
         <Header />
 
         <div
-          className={`mx-auto flex h-64 w-64 flex-col items-center justify-center space-y-3 rounded-full bg-white shadow-xl`}
+          className={`fixed left-1/2 top-1/2 flex h-64 w-64 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center space-y-3 rounded-full bg-white shadow-xl`}
           style={{
             color: proficiencyColorMap[proficiencyLevel as keyof typeof proficiencyColorMap],
             boxShadow: `0px 5px 20px 10px rgba(0, 0, 0, 0.08), inset ${tinycolor(
@@ -55,7 +55,7 @@ export default function DashboardPage() {
           <p className={"inter-font-black text-[#3b3b3b]"}>🇪🇸 Spanish</p>
         </div>
 
-        <div className={"flex justify-center pt-24"}>
+        <div className={"fixed bottom-0 left-0 flex h-[50vh] w-full items-center justify-center pt-24"}>
           <Button
             onClick={startConvo}
             color={"purple"}

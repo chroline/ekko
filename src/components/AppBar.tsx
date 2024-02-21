@@ -16,7 +16,7 @@ export default function AppBar() {
   return (
     <div
       className={clsx(
-        "flex h-16 shrink-0 items-center justify-between px-4",
+        "sticky z-20 flex h-16 shrink-0 items-center justify-between px-4",
         pathname === "/" ? "text-white" : "relative z-10 text-purple-500 shadow-md"
       )}
     >
@@ -28,7 +28,7 @@ export default function AppBar() {
         </Link>
       )}
 
-      <p className={"fixed left-1/2 -translate-x-1/2 font-heading text-xl font-bold"}>EKKO</p>
+      <p className={"absolute left-1/2 -translate-x-1/2 font-heading text-xl font-bold"}>EKKO</p>
 
       <UserButton afterSignOutUrl={"/auth/sign-in"} />
     </div>

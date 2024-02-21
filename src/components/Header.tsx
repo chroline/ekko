@@ -6,7 +6,11 @@ function Header() {
   const { profile } = useProfile();
 
   return (
-    <div className={"space-y-2 py-16 text-white"}>
+    <div
+      className={
+        "fixed left-0 top-0 flex h-[50vh] w-full flex-col items-center justify-center space-y-2 pb-24 text-white"
+      }
+    >
       <h1 className={"text-center text-5xl font-bold"}>Hola, {profile!.name}</h1>
 
       <div className={"flex items-center justify-center space-x-1 font-medium text-white"}>

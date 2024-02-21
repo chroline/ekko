@@ -1,6 +1,10 @@
+"use client";
+
 import { ClerkProvider } from "@clerk/nextjs";
+import { ThemeProvider } from "@material-tailwind/react";
 
 import "~/globals.css";
+import theme from "~/lib/theme";
 
 import ConvexClientProvider from "./ConvextClientProvider";
 
@@ -13,7 +17,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {/* Layout UI */}
         <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
           <ConvexClientProvider>
-            <main>{children}</main>
+            <ThemeProvider value={theme}>
+              <main>{children}</main>
+            </ThemeProvider>
           </ConvexClientProvider>
         </ClerkProvider>
       </body>
