@@ -1,6 +1,6 @@
 import { Fire } from "@phosphor-icons/react";
 
-import useProfile from "~/lib/useProfile.ts";
+import useProfile from "~/lib/useProfile";
 
 function Header() {
   const { profile } = useProfile();

@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "dev": "next dev"
+    "dev": "next dev",
+    "start": "next",
+    "build": "next build"
   },
   "dependencies": {
     "@clerk/clerk-react": "^4.25.2",
