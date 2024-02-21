@@ -12,6 +12,14 @@ interface RequestData {
 export async function POST(request: NextRequest) {
   const data: RequestData = await request.json();
 
+  console.log(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/generate-response", {
+    method: "POST",
+    body: JSON.stringify({ config: data.config, history: [] }),
+    headers: {
+      Authorization: `Bearer ${request.cookies.get("__session").value}`,
+    },
+  });
+
   const initialMessage: { text: string } = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/generate-response", {
     method: "POST",
     body: JSON.stringify({ config: data.config, history: [] }),
