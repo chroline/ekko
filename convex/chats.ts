@@ -60,8 +60,6 @@ export const getChatsProficiencyLevel = query({
       });
       averageScore = totalScore / chats.length;
     }
-    console.log({ averageScore });
-
     if (isNaN(averageScore)) return "Novice";
 
     return proficiencyLevels[Math.round(averageScore) - 1];
