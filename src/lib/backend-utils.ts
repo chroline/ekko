@@ -5,6 +5,6 @@ export const predictionServiceClient = new PredictionServiceClient({
   fallback: true,
   credentials: {
     client_email: process.env.GCLOUD_CLIENT_EMAIL,
-    private_key: process.env.GCLOUD_PRIVATE_KEY,
+    private_key: process.env.GCLOUD_PRIVATE_KEY.split(String.raw`\n`).join("\n"),
   },
 });
