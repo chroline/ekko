@@ -88,6 +88,10 @@ export default async function generateResponse(data: RequestData) {
         role: message.isUser ? "user" : "assistant",
         content: message.message || "",
       })),
+      data.message && {
+        role: "user",
+        content: data.message,
+      },
     ].filter(message => !!message) as ChatCompletionMessageParam[],
     stream: true,
     temperature: 0.9,
